@@ -12,9 +12,9 @@ In order to run the code, you need to have the following files:
 
 1. Network's topology:
 
-  * _"../ModelValidation/IntersectionTable_new.csv"_ -- contains information about intersections: x and y coordinates of every intersection (columns 1 and 2), its ID (column 3) and whether it is a node on border (column 4), which means that this intersection is located at domain's boundary through which vehicles may enter (inflows), or exit (outflows);
+  * _"../ModelValidation/IntersectionTable.csv"_ -- contains information about intersections: x and y coordinates of every intersection (columns 1 and 2), its ID (column 3) and whether it is a node on border (column 4), which means that this intersection is located at domain's boundary through which vehicles may enter (inflows), or exit (outflows);
 
-  * _"../ModelValidation/RoadTable_2.csv"_ -- contains information about roads: ID1 and ID2 (columns 3 and 4) are the id's of corresponding intersections that the road is connecting, ID_road (column 5) is the road's ID, max_vel (column 6) is its free-flow limit estimated from real measurements, then we have number of lanes (column 7) and road's length (column 8);
+  * _"../ModelValidation/RoadTable.csv"_ -- contains information about roads: ID1 and ID2 (columns 3 and 4) are the id's of corresponding intersections that the road is connecting, ID_road (column 5) is the road's ID, max_vel (column 6) is its free-flow limit estimated from real measurements, then we have number of lanes (column 7) and road's length (column 8);
 
   * _"../ModelValidation/TurnTable.csv"_ -- contains turning ratios between any pair of roads: ID1 of incoming road (column 1), ID2 of outgoing road (column 2) and the turning ratio between these roads (column 5). 
 
