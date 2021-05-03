@@ -1,4 +1,4 @@
-# multidirectional-traffic-model
+# Multidirectional Traffic Model
 
 This is the project developed in scope of PhD thesis titled "Traffic control in large-scale urban networks" by Liudmila Tumash in DANCE team of GIPSA-Lab, CNRS, Grenoble, France. 
 
