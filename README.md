@@ -4,11 +4,11 @@ This is the project developed in scope of PhD thesis titled "Traffic control in 
 
 This code is used to produce two different vehicle density distributions. One density is the result of numerical simulation of NSWE model that is a macroscopic two-dimensional first-order PDE system consisting of four equations that predicts vehicle density evolution in four cardinal directions (North, South, West and East), and the other density is the one reconstructed from data obtained from real sensors and floating-car data on 8.01.2021 in Grenoble, France.
 
-The project was built with Qt 5.12 MSVC 2017 64bit. In addition to Qt it requires Eigen library, which is also included in this repository.
+The project was built with Qt 5.12 MSVC 2017 64bit. In addition to Qt it requires Eigen library, path to which should be specified in Traffic_2D.pro file.
 
 # Data files
 
-In order to run the code, you need to have the following files (the ones provided are taken on 08.01.2021 in the city of Grenoble, France):
+In order to run the code, you need to have the following files:
 
 1. Network's topology:
 
@@ -27,6 +27,8 @@ In order to run the code, you need to have the following files (the ones provide
   * _"../ModelValidation/AllInflows.csv"_ -- contains inflow values (in veh/hour) for every road for every time step (one minute). If road is outgoing from intersection that is not on border, then the inflow value is zero;
 
   * _"../ModelValidation/AllOutflows.csv"_ -- contains outflow values (in veh/hour) for every road for every time step (one minute). If road is incoming into intersection that is not on border, then the outflow value is zero.
+
+ The data provided in this repository come from real measurements taken on 08.01.2021 in the city of Grenoble, France. The path to the files is specified in mainwindow.cpp.
 
 # Code structure
 
