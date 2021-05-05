@@ -15,7 +15,7 @@ public:
     UrbanNetwork();
 
     void loadIntersections(QString filename);
-    void loadRoads(QString filename, double distance_between_cars = 6.0);
+    void loadRoads(QString filename, double distance_between_cars = 6.0);    // 6 means that the minimum distance between the heads of two consequative vehicles is 6 meters
     void loadTurns(QString filename);
 
     void paint(QImage& image);
