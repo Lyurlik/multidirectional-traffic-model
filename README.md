@@ -32,10 +32,10 @@ In order to run the code, you need to have the following files:
 
 # Code structure
 
-The main file of the project is mainwindow.cpp: in its constructor we specify the file names to be loaded, start simulation starting time (line 26) and simulation step size (line 28). We can also change there the weighting parameter eta used to approximate parameters for every cell (line 4), and parameter d0 (line 5) is used for Gaussian Kernel estimation.
+The main file of the project is mainwindow.cpp: in its constructor we specify the file names to be loaded, start simulation starting time (line 26) and simulation step size (line 28). We can also change there the weighting parameter eta used to approximate parameters for every cell (line 4), and parameter d0 (line 5) is used for Gaussian Kernel estimation. 
 
 Other important classes are:
-* __UrbanNetwork__, which contains all the network geometry information (this is where all the network files are read). This network is used for both densities.
+* __UrbanNetwork__, which contains all the network geometry information (this is where all the network files are read). This network is used for both densities. In its function loadRoads one needs to specify the minimum distance between the heads of two consequative vehicles.
 * __NSWEmodel__, which contains translation procedure of all network and intersection parameters into NSWE-formulation (function processIntersections). After all parameters are defined in NSWE, it calls constructInterpolation function that approximates these parameters defined for every intersection to be defined on every cell of a network. Then update is performed, where the Godunov numerical scheme is applied for the state update using NSWE model.
 There is also a function getSSIMDiff_mean_weighted used to compute the weighted SSIM index between two densities (one from NSWE and the other one from real data).
 * __GrenobleData__, where all the data estimated from the real-life experiments are loaded. In function reconstructDensity the density initially given for each road is defined for every cell. Thereby, every road is divided in 10 parts and density values are presented as points on the border between these parts. Then Gaussian Kernel estimation is used to determine density for every cell in the domain.
