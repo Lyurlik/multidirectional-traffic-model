@@ -234,6 +234,7 @@ Density4 GrenobleData::reconstructDensity(double t)
             ema_density.S.data = estimated_density.S.data;
             ema_density.W.data = estimated_density.W.data;
             ema_density.E.data = estimated_density.E.data;
+            ema_initialized = true;
         }
         else {
             ema_density.N.data = (1 - ema_parameter) * ema_density.N.data + ema_parameter * estimated_density.N.data;
