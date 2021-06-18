@@ -16,6 +16,8 @@ In order to run the code, you need to have the following files:
 
   * _"../ModelValidation/RoadTable.csv"_ -- contains information about roads: ID1 and ID2 (columns 3 and 4) are the id's of corresponding intersections that the road is connecting, ID_road (column 5) is the road's ID, max_vel (column 6) is its free-flow limit estimated from real measurements, then we have number of lanes (column 7) and road's length (column 8);
 
+  * _"../ModelValidation/RoadFRC.csv"_ -- contains information about road importance: column 1 is the road's ID and column 2 is the importance class from 1 to 7 with roads of class 1 being the most important;
+
   * _"../ModelValidation/TurnTable.csv"_ -- contains turning ratios between any pair of roads: ID1 of incoming road (column 1), ID2 of outgoing road (column 2) and the turning ratio between these roads (column 5). 
 
 2. Data from real sensors (model validation part):
@@ -36,7 +38,7 @@ The main file of the project is mainwindow.cpp: in its constructor we specify th
 
 Other important classes are:
 * __UrbanNetwork__, which contains all the network geometry information (this is where all the network files are read). This network is used for both densities. In its function loadRoads one needs to specify the minimum distance between the heads of two consequative vehicles.
-* __NSWEmodel__, which contains translation procedure of all network and intersection parameters into NSWE-formulation (function processIntersections). After all parameters are defined in NSWE, it calls constructInterpolation function that approximates these parameters defined for every intersection to be defined on every cell of a network. Then update is performed, where the Godunov numerical scheme is applied for the state update using NSWE model.
+* __NSWEModel__, which contains translation procedure of all network and intersection parameters into NSWE-formulation (function processIntersections). After all parameters are defined in NSWE, it calls constructInterpolation function that approximates these parameters defined for every intersection to be defined on every cell of a network. Then update is performed, where the Godunov numerical scheme is applied for the state update using NSWE model.
 There is also a function getSSIMDiff_mean_weighted used to compute the weighted SSIM index between two densities (one from NSWE and the other one from real data).
 * __GrenobleData__, where all the data estimated from the real-life experiments are loaded. In function reconstructDensity the density initially given for each road is defined for every cell. Thereby, every road is divided in 10 parts and density values are presented as points on the border between these parts. Then Gaussian Kernel estimation is used to determine density for every cell in the domain.
 * __TrafficSystem__ implements concurrent thread for parallel NSWE simulation relative to the main visualization thread
