@@ -41,6 +41,7 @@ public:
     std::vector<Eigen::Vector4d> sin_intersec;
     std::vector<Eigen::Vector4d> cos_intersec;
     std::vector<double> L_intersec;
+    std::vector<bool> used_for_out_interpolation;
 
     std::vector<Eigen::Vector4d> vel_intersec;
     std::vector<Eigen::Vector4d> rho_max_intersec;

@@ -18,6 +18,7 @@ void UrbanNetwork::loadIntersections(QString filename)
     node_IDs.clear();
     node_on_border.clear();
     nodes.clear();
+	node_weight.clear();
 
     //---------------------------
     //Read file
@@ -37,6 +38,7 @@ void UrbanNetwork::loadIntersections(QString filename)
         node_on_border.push_back(is_on_border == 1);
         nodes.push_back(v);
         node_IDs.push_back(ID);
+        node_weight.push_back(1);
     }
 
 
@@ -79,6 +81,7 @@ void UrbanNetwork::loadRoads(QString filename, double distance_between_cars)
     edge_IDs.clear();
     edge_list.clear();
     edge_max_velocity.clear();
+	edge_weight.clear();
     min_density = 1e9;
     min_velocity = 1e9;
 
@@ -116,6 +119,7 @@ void UrbanNetwork::loadRoads(QString filename, double distance_between_cars)
         edge_max_velocity.push_back(max_vel);
         edge_max_density.push_back(lanes / distance_between_cars);
         edge_max_flow.push_back(max_vel * lanes / distance_between_cars / 3);
+        edge_weight.push_back(1);
 
         if (min_density > lanes / distance_between_cars) {
             min_density = lanes / distance_between_cars;
@@ -140,22 +144,6 @@ void UrbanNetwork::loadRoads(QString filename, double distance_between_cars)
         incoming_edges[edge_list[i].second].push_back(i);
         outcoming_edges[edge_list[i].first].push_back(i);
     }
-
-    QFile* output_data_1 = new QFile("inflows_empty.txt");
-    if (!output_data_1->open(QFile::WriteOnly | QFile::Text)) {
-        qDebug() << "ERROR Network: Could not open network file!!!";
-    }
-    QTextStream* output_data_stream_1 = new QTextStream(output_data_1);
-
-    for (unsigned int k = 0; k < nodes.size(); k++) {
-        if (!node_on_border[k])
-            continue;
-
-        for (unsigned int j = 0; j < outcoming_edges[k].size(); j++) {
-            *output_data_stream_1 << edge_IDs[outcoming_edges[k][j]] << ",0\n";
-        }
-    }
-    output_data_1->close();
 
     qDebug() << "INFO Network: roads file is loaded.";
 }
@@ -225,6 +213,59 @@ void UrbanNetwork::loadTurns(QString filename)
             }
         }
     }
+}
+
+void UrbanNetwork::loadImportance(QString filename)
+{
+    QFile* input_data = new QFile(filename);
+    if (!input_data->open(QFile::ReadOnly | QFile::Text)) {
+        qDebug() << "ERROR Network: Could not open inflows file!!!";
+    }
+    QTextStream* input_data_stream = new QTextStream(input_data);
+
+    while(!input_data_stream->atEnd()) {
+        QString line = input_data_stream->readLine();
+        line.replace(',', ' ');
+        QTextStream ss(&line);
+
+        unsigned int edge_id;
+        int class_num;
+        ss >> edge_id >> class_num;
+
+        for (unsigned int i = 0; i < edge_list.size(); i++) {
+            if (edge_id == edge_IDs[i]) {
+                switch (class_num) {
+                case 1:
+                case 2:
+                    edge_weight[i] = 2; break;   //1
+                case 3:
+                    edge_weight[i] = 1; break;   //1
+                case 4:
+                    edge_weight[i] = 1; break;   //0.5
+                case 5:
+                    edge_weight[i] = 1; break;   //0.23
+                case 6:
+                    edge_weight[i] = 1; break;   //0.15
+                case 7:
+                    edge_weight[i] = 1; break;   //0.03
+                }
+                break;
+            }
+        }
+    }
+
+    for (unsigned int k = 0; k < node_weight.size(); k++) {
+        double sum = 0;
+        for (unsigned int i = 0; i < incoming_edges[k].size(); i++) {
+            sum += edge_weight[incoming_edges[k][i]];
+        }
+        for (unsigned int j = 0; j < outcoming_edges[k].size(); j++) {
+            sum += edge_weight[outcoming_edges[k][j]];
+        }
+        node_weight[k] = sum / (incoming_edges[k].size() + outcoming_edges[k].size());
+    }
+
+    qDebug() << "INFO Network: road importance file is loaded.";
 }
 
 

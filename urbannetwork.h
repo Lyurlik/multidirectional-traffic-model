@@ -15,8 +15,9 @@ public:
     UrbanNetwork();
 
     void loadIntersections(QString filename);
-    void loadRoads(QString filename, double distance_between_cars = 6.0);    // 6 means that the minimum distance between the heads of two consequative vehicles is 6 meters
+    void loadRoads(QString filename, double distance_between_cars = 6.0);
     void loadTurns(QString filename);
+    void loadImportance(QString filename);
 
     void paint(QImage& image);
 
@@ -29,12 +30,14 @@ public:
     std::vector<unsigned int> node_IDs;
     std::vector<bool> node_on_border;
     std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> > nodes;
+    std::vector<double> node_weight;
 
     std::vector<unsigned int> edge_IDs;
     std::vector<std::pair<unsigned int, unsigned int> > edge_list;
     std::vector<double> edge_max_velocity;
     std::vector<double> edge_max_density;
     std::vector<double> edge_max_flow;
+    std::vector<double> edge_weight;
 
     std::vector< std::vector<unsigned int> > incoming_edges;
     std::vector< std::vector<unsigned int> > outcoming_edges;

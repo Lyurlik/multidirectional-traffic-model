@@ -41,7 +41,6 @@ public:
     double max_time;
     std::vector<double> scenario_timepoints;
     std::vector<std::vector<double> > scenario_densities;
-    std::vector<std::vector<double> > scenario_velocities;
     std::vector<std::vector<double> > scenario_inflows;
     std::vector<std::vector<double> > scenario_outflows;
 

@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     // ------------- read network topology ------------ /////////////////////////////////
     traffic_system.network.loadIntersections("../ModelValidation/IntersectionTable.csv");
     traffic_system.network.loadRoads("../ModelValidation/RoadTable.csv");
+    traffic_system.network.loadImportance("../ModelValidation/RoadFRC.csv");
     traffic_system.network.loadTurns("../ModelValidation/TurnTable.csv");
 
     // ------------- read real data & set Gaussian Kernel estimation parameter ------------- ///////////////////////

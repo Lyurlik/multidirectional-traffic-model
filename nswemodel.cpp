@@ -57,6 +57,7 @@ void NSWEModel::processIntersections()
     cos_intersec.resize(network->nodes.size());
     vel_intersec.resize(network->nodes.size());
     rho_max_intersec.resize(network->nodes.size());
+    used_for_out_interpolation.resize(network->nodes.size());
 
     // run over all intersections in a network
     for (unsigned int k = 0; k < network->nodes.size(); k++) {
@@ -248,6 +249,7 @@ void NSWEModel::processIntersections()
                 vel_intersec[k](s1) = 0;
         }
 
+        used_for_out_interpolation[k] = network->outcoming_edges[k].size() > 0;
     }  
 
     qDebug() << "NSWE: intersections processed.";
@@ -317,13 +319,11 @@ void NSWEModel::constructInterpolation(double strength) // approximate all param
             outflow[i][j].setZero();
             double weight_in_out = 0;
             double weight_out = 0;
-            double weight_sum = 0;
 
             for (int k = 0; k < network->nodes.size(); k++) {
                 double dist = (network->nodes[k] - pos[i][j]).norm();
                 double kernel = exp(-dist * dist * strength * strength);
-                dist = exp(-dist * strength);
-                weight_sum += dist;
+                dist = exp(-dist * strength) * network->node_weight[k];
                 if (!network->node_on_border[k]) {
                     weight_in_out += dist;
                     alpha[i][j] += alpha_intersec[k] * dist;
@@ -333,8 +333,10 @@ void NSWEModel::constructInterpolation(double strength) // approximate all param
                     rho_max[i][j] += rho_max_intersec[k] * dist;
                     vel[i][j] += vel_intersec[k] * dist;
                 }
+                if (used_for_out_interpolation[k]) {
                     weight_out += dist;
                     L[i][j] += L_intersec[k] * dist;
+                }
             }
 
 

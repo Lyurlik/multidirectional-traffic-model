@@ -41,13 +41,11 @@ void GrenobleData::loadData(QString filename_time, QString filename_density, QSt
     //--------------------------
 
     scenario_densities.resize(scenario_timepoints.size());
-    scenario_velocities.resize(scenario_timepoints.size());
     scenario_inflows.resize(scenario_timepoints.size());
     scenario_outflows.resize(scenario_timepoints.size());
 
     for (int i = 0; i < scenario_timepoints.size(); i++) {
         scenario_densities[i].resize(network->edge_IDs.size());
-        scenario_velocities[i].resize(network->edge_IDs.size());
         scenario_inflows[i].resize(network->edge_IDs.size());
         scenario_outflows[i].resize(network->edge_IDs.size());
     }
@@ -68,13 +66,15 @@ void GrenobleData::loadData(QString filename_time, QString filename_density, QSt
         int road_id;
         ss >> road_id;
 
-        int index = 0;
+        int index = -1;
         for (int i = 0; i < network->edge_IDs.size(); i++) {
             if (network->edge_IDs[i] == road_id) {
                 index = i;
                 break;
             }
         }
+        if (index == -1)
+            continue;
 
         for (int i = 0; i < scenario_timepoints.size(); i++) {
             float density;
@@ -102,13 +102,15 @@ void GrenobleData::loadData(QString filename_time, QString filename_density, QSt
         int road_id;
         ss >> road_id;
 
-        int index = 0;
+        int index = -1;
         for (int i = 0; i < network->edge_IDs.size(); i++) {
             if (network->edge_IDs[i] == road_id) {
                 index = i;
                 break;
             }
         }
+        if (index == -1)
+            continue;
 
         if (!network->node_on_border[network->edge_list[index].first])      // inflow can be set only for the node_on_border
             continue;
@@ -136,13 +138,15 @@ void GrenobleData::loadData(QString filename_time, QString filename_density, QSt
         int road_id;
         ss >> road_id;
 
-        int index = 0;
+        int index = -1;
         for (int i = 0; i < network->edge_IDs.size(); i++) {
             if (network->edge_IDs[i] == road_id) {
                 index = i;
                 break;
             }
         }
+        if (index == -1)
+            continue;
 
         if (!network->node_on_border[network->edge_list[index].second])       // outflow can be set only for the node_on_border
             continue;
@@ -234,7 +238,6 @@ Density4 GrenobleData::reconstructDensity(double t)
             ema_density.S.data = estimated_density.S.data;
             ema_density.W.data = estimated_density.W.data;
             ema_density.E.data = estimated_density.E.data;
-            ema_initialized = true;
         }
         else {
             ema_density.N.data = (1 - ema_parameter) * ema_density.N.data + ema_parameter * estimated_density.N.data;
@@ -242,7 +245,6 @@ Density4 GrenobleData::reconstructDensity(double t)
             ema_density.W.data = (1 - ema_parameter) * ema_density.W.data + ema_parameter * estimated_density.W.data;
             ema_density.E.data = (1 - ema_parameter) * ema_density.E.data + ema_parameter * estimated_density.E.data;
         }
-
         return ema_density;
     }
 
