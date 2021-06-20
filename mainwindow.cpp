@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-double eta = 0.02;     // weighting parameter used for approximation of functions
+double mu = 0.02;     // weighting parameter used for approximation of functions
 double d0 = 70;       // Gaussian Kernel parameter. This valus specifies in which range does a car contribute to the density. d0 = 70 implies a range of 70 meters.
 
 MainWindow::MainWindow(QWidget *parent)
@@ -22,9 +22,9 @@ MainWindow::MainWindow(QWidget *parent)
     traffic_system.Grenoble.setDensityReconstructionParameter(d0);      // parameter d_0
 
     traffic_system.NSWE.processIntersections();   // find all the parameters like L, alpha, phi_max etc. in NSWE formulation for every intersection in a network
-    traffic_system.NSWE.constructInterpolation(eta);   // contruct interpolation to define network and intersection parameters for all the cells (continuous plane)
+    traffic_system.NSWE.constructInterpolation(mu);   // contruct interpolation to define network and intersection parameters for all the cells (continuous plane)
 
-    time = 3600 * 14;    // start simulation time, here it is 2pm (multiply by 3600 to have time in seconds
+    time = 3600 * 14;    // start simulation time, here it is 2pm (multiply by 3600 to have time in seconds)
     traffic_system.init_simulation(time);
     traffic_system.setTimestep(0.1);     // time step for NSWE model
     traffic_system.NSWE.setInitialDensity(traffic_system.Grenoble.reconstructDensity(time));   // here we read data from Martin, divide roads by 10 and turn it into NSWE formulation
@@ -78,7 +78,7 @@ void MainWindow::paintEvent(QPaintEvent*)
     int width = geometry().width();
     int height = geometry().height();
 
-    QString s = "beta = " + QString::number(eta) + ",   time = " + QString::number(time / 3600.0) + ", SSIM =" + QString::number(traffic_system.NSWE.getSSIMDiff_mean_weighted(traffic_system.Grenoble.reconstructDensity(time)));
+    QString s = "mu = " + QString::number(mu) + ",   time = " + QString::number(time / 3600.0) + ", SSIM =" + QString::number(traffic_system.NSWE.getSSIMDiff_mean_weighted(traffic_system.Grenoble.reconstructDensity(time)));
     painter.setFont(QFont("Times", 12, QFont::DemiBold));
     painter.drawText(width / 2 - 30, 30, s);
 
